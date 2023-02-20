@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding">30.dp</dimen>
+    <dimen name="labelPaddingStart">16.dp</dimen>
+    <dimen name="labelPaddingTop">16.dp</dimen>
+    <dimen name="ColumnArrangement">30.dp</dimen>
+    <dimen name="ButtonShape">28.dp</dimen>
+</resources>
