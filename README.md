@@ -1,1 +1,1 @@
-# Android_second_task
+# Калькулятор на Jetpack Compose для кружка по Android разработке. 
