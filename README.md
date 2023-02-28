@@ -1,1 +1,1 @@
-# Калькулятор для Android кружка.
+# compose-calculator-second-task
