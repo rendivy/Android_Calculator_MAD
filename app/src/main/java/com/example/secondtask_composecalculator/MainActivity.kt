@@ -19,18 +19,12 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-@Preview (showBackground = true)
+@Preview (showBackground = true, device = "spec:width=1080px,height=1920px,dpi=440")
 @Composable
-fun Show(){
+fun TestPreview(){
     val expression = remember { mutableStateOf("")}
     CalculatorView(expression)
 }
-
-
-
-
-
 
 
 

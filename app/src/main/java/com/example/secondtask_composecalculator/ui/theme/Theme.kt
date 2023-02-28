@@ -19,11 +19,6 @@ private val LightColorPalette = lightColors(
 
 )
 
-
-
-
-
-
 @Composable
 fun SecondTask_ComposeCalculatorTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

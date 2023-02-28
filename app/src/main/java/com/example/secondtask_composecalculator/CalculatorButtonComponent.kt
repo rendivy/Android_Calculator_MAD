@@ -10,14 +10,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.secondtask_composecalculator.ui.theme.DisplayColor
+import com.example.secondtask_composecalculator.ui.theme.FontColor
 import com.example.secondtask_composecalculator.ui.theme.GoogleSans
+import com.example.secondtask_composecalculator.ui.theme.NumberButtonColor
 
 
-val ActionButtonColor = Color(99, 59, 72)
-val NumberButtonColor = Color(74, 68, 88)
-val DisplayColor = Color(29, 27, 30)
-val FontColor = Color(232, 222, 248)
-var LabelColor = Color(230, 225, 229)
+
 
 
 var numberIsClicked = false
@@ -52,7 +51,6 @@ fun ZeroButton(expression: MutableState<String>){
 
 @Composable
 fun ChangeSignButton(symbol: String, color: Color, expression: MutableState<String>){
-    val symbolCopy: String
     Button(onClick = { signChange(expression) },
         shape = RoundedCornerShape(28.dp),
         colors = ButtonDefaults.buttonColors(backgroundColor = color),
@@ -122,6 +120,7 @@ fun CalculateButton(color: Color, expression: MutableState<String>){
         Text(text = "=", fontFamily = GoogleSans, fontSize = 32.sp, color = FontColor)
     }
 }
+
 
 @Composable
 fun ClearButton(symbol: String, expression: MutableState<String>){
