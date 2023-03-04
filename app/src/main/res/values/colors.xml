@@ -7,9 +7,4 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name = "actionButtonColor">#633B48</color>
-    <color name = "numberButtonColor">#4A4458</color>
-    <color name = "expressionColor">#D0BCFF</color>
-    <color name = "labelColor">#E6E1E5</color>
-    <color name = "displayColor">#1d1e27</color>
 </resources>

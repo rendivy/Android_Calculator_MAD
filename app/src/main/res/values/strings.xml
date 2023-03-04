@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">SecondTask_ComposeCalculator</string>
-    <string name="test">123</string>
+    <string name="test">Calculator</string>
 </resources>

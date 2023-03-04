@@ -1,192 +1,133 @@
 package com.example.secondtask_composecalculator
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
+import com.example.secondtask_composecalculator.data.ActionEnum
 import com.example.secondtask_composecalculator.ui.theme.*
 
+
+
 @Composable
-fun CalculatorView(expression: MutableState<String>) {
+fun CalculatorView() {
+    var expression = remember { mutableStateOf("") }
+
+    val buttonMatrix: List<List<ActionEnum>> = listOf(
+        listOf(ActionEnum.CLEAR, ActionEnum.SIGN, ActionEnum.PERCENT, ActionEnum.DIVIDE),
+        listOf(ActionEnum.SEVEN, ActionEnum.EIGHT, ActionEnum.NINE, ActionEnum.MULTIPLY),
+        listOf(ActionEnum.FOUR, ActionEnum.FIVE, ActionEnum.SIX, ActionEnum.MINUS),
+        listOf(ActionEnum.ONE, ActionEnum.TWO, ActionEnum.THREE, ActionEnum.PLUS),
+        listOf(ActionEnum.ZERO, ActionEnum.DOUBLE, ActionEnum.CALCULATE)
+    )
+
     Column(modifier = Modifier.background(DisplayColor))
     {
         Text(
-            text = stringResource(id = R.string.test),
-            fontSize = 28.sp,
+            text = MainLabel,
+            fontSize = LabelSize,
             color = LabelColor,
-            fontFamily = GoogleSans,
-            modifier = Modifier.padding(start = 16.dp, top = 16.dp)
+            fontFamily = GoogleSansMedium,
+            modifier = Modifier.padding(
+                start = MainExpressionPadding,
+                top = MainExpressionPadding)
         )
         Text(
             text = expression.value,
-            fontSize = 50.sp,
+            fontSize = MainExpressionSize,
             color = FontColor,
             textAlign = TextAlign.Start,
-            modifier = Modifier.padding(start = 16.dp, top = 16.dp),
-            fontFamily = GoogleSans,
-            maxLines = 1,
+            modifier = Modifier.padding(
+                start = MainExpressionPadding,
+                top = MainExpressionPadding),
+            fontFamily = GoogleSansMedium,
+            maxLines = 2,
         )
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(),
-            contentAlignment = Alignment.BottomCenter,
-        ) {
-            Column(
+                .fillMaxHeight()
+                .background(DisplayColor)
+                .padding(
+                    start = ColumnPadding,
+                    top = ColumnPadding,
+                ),
+            verticalArrangement = Arrangement.Bottom
+        )
+        {
+            Row(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .background(DisplayColor)
+                    .fillMaxWidth()
                     .padding(
-                        start = 16.dp, end = 16.dp, top = 12.dp, bottom = 16.dp
-                    )
+                        end = DeleteEndPadding,
+                        bottom = DeleteBottomPadding,
+                        top = DeleteTopPadding),
+                horizontalArrangement = Arrangement.End
             )
             {
-                Row( modifier = Modifier
-                    .background(DisplayColor)
-                    .fillMaxWidth()
-                    .padding(end = 16.dp, bottom = 16.dp, top = 16.dp),
-                    horizontalArrangement = Arrangement.End)
-                {
-                    DeleteButton(expression = expression)
-                }
-
+                DeleteButton(expression = expression)
+            }
+            Divider(
+                modifier = Modifier.padding(bottom = DividerPadding, end = DividerPadding),
+                thickness = DividerThickness,
+                color = Color.DarkGray
+            )
+            var modifier:Modifier
+            var fontSize: TextUnit
+            buttonMatrix.forEach { buttons ->
                 Row(
                     modifier = Modifier
                         .background(DisplayColor),
                     horizontalArrangement = Arrangement.SpaceAround
-                ) {
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f))
-                    { ClearButton(symbol = "AC", expression) }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f))
-                    { ChangeSignButton(symbol = "±", NumberButtonColor, expression) }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f))
-                    { PrecentageButton(expression) }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f))
-                    { ActionButton(symbol = "÷", ActionButtonColor, expression) }
+                )
+                {
+                    buttons.forEach { buttonSymbol ->
+                        modifier = if (buttonSymbol.symbol == ActionEnum.ZERO.symbol){
+                            Modifier
+                                .weight(2.2f)
+                                .aspectRatio(2.2f)
+                        }
+                        else{
+                            Modifier
+                                .weight(1f)
+                                .aspectRatio(1f)
+                        }
+                        fontSize = if (buttonSymbol.symbol == ActionEnum.CLEAR.symbol){
+                            ClearButtonSize
+                        }
+                        else{
+                            DefaultButtonSize
+                        }
+                        Box(
+                            modifier = modifier
+                        )
+                        {
+                            ButtonModel(
+                                symbol = buttonSymbol.symbol,
+                                onClick = { handleButtonClick(buttonSymbol, expression) },
+                                color = getButtonColor(buttonSymbol),
+                                fontSize = fontSize
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(SpacerPadding))
+                    }
                 }
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    modifier = Modifier
-                        .background(DisplayColor)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f))
-                    { NumberButton(symbol = "7", expression) }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f))
-                    { NumberButton(symbol = "8", expression) }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f))
-                    { NumberButton(symbol = "9", expression) }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f))
-                    { ActionButton(symbol = "×", ActionButtonColor, expression) }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    modifier = Modifier
-                        .background(DisplayColor)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f))
-                    { NumberButton(symbol = "4", expression) }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f))
-                    { NumberButton(symbol = "5", expression) }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f))
-                    { NumberButton(symbol = "6",expression) }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f))
-                    { ActionButton(symbol = "-", ActionButtonColor, expression) }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    modifier = Modifier
-                        .background(DisplayColor)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f))
-                    { NumberButton(symbol = "1", expression) }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f))
-                    { NumberButton(symbol = "2", expression) }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f))
-                    { NumberButton(symbol = "3", expression) }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f))
-                    { ActionButton(symbol = "+", ActionButtonColor, expression) }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    modifier = Modifier
-                        .background(DisplayColor)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Box(modifier = Modifier
-                        .weight(2.2f)
-                        .aspectRatio(2.1f))
-                    { ZeroButton(expression) }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f))
-                    { DoubleButton(expression) }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .aspectRatio(1f))
-                    { CalculateButton(ActionButtonColor, expression) }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(SpacerPadding))
             }
         }
     }
 }
+
+
+
+
+
+

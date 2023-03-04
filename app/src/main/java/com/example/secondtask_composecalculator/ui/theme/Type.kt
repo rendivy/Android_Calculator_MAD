@@ -12,7 +12,7 @@ import com.example.secondtask_composecalculator.R
 
 
 
-val GoogleSans = FontFamily(
+val GoogleSansMedium = FontFamily(
     Font(R.font.googlesans_medium)
 )
 
@@ -24,7 +24,7 @@ val Typography = Typography(
         fontSize = 24.sp
     ),
     h1 = TextStyle(
-        fontFamily = GoogleSans,
+        fontFamily = GoogleSansMedium,
         fontWeight = FontWeight.Bold,
         fontSize = 32.sp,
         color = Color.White
