@@ -62,7 +62,6 @@ fun TextView() {
             fontFamily = GoogleSansMedium,
             maxLines = 2,
         )
-
     }
 }
 
@@ -102,45 +101,50 @@ fun KeyboardView() {
             thickness = DividerThickness,
             color = Color.DarkGray
         )
-        var modifier: Modifier
-        var fontSize: TextUnit
-        buttonMatrix.forEach { buttons ->
-            Row(
-                modifier = Modifier
-                    .background(DisplayColor),
-                horizontalArrangement = Arrangement.SpaceAround
-            )
-            {
-                buttons.forEach { buttonSymbol ->
-                    modifier = if (buttonSymbol == ActionEnum.ZERO) {
-                        Modifier
-                            .weight(2.2f)
-                            .aspectRatio(2.2f)
-                    } else {
-                        Modifier
-                            .weight(1f)
-                            .aspectRatio(1f)
-                    }
-                    fontSize = if (buttonSymbol.symbol == ActionEnum.CLEAR.symbol) {
-                        ClearButtonSize
-                    } else {
-                        DefaultButtonSize
-                    }
-                    Box(
-                        modifier = modifier
-                    )
-                    {
-                        ButtonModel(
-                            buttonSymbol = buttonSymbol,
-                            onClick = { action.handleButtonClick(buttonSymbol) },
-                            color = action.getButtonColor(buttonSymbol),
-                            fontSize = fontSize
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(SpacerPadding))
-                }
-            }
-            Spacer(modifier = Modifier.height(SpacerPadding))
+        buttonMatrix.forEach {
+                buttons -> KeyboardRow(buttons = buttons)
         }
     }
+}
+
+@Composable
+fun KeyboardRow(buttons: List<ActionEnum>){
+    var modifier: Modifier
+    var fontSize: TextUnit
+    Row(
+        modifier = Modifier
+            .background(DisplayColor),
+        horizontalArrangement = Arrangement.SpaceAround
+    )
+    {
+        buttons.forEach { buttonSymbol ->
+            modifier = if (buttonSymbol == ActionEnum.ZERO) {
+                Modifier
+                    .weight(2.2f)
+                    .aspectRatio(2.2f)
+            } else {
+                Modifier
+                    .weight(1f)
+                    .aspectRatio(1f)
+            }
+            fontSize = if (buttonSymbol.symbol == ActionEnum.CLEAR.symbol) {
+                ClearButtonSize
+            } else {
+                DefaultButtonSize
+            }
+            Box(
+                modifier = modifier
+            )
+            {
+                ButtonModel(
+                    buttonSymbol = buttonSymbol,
+                    onClick = { action.handleButtonClick(buttonSymbol) },
+                    color = action.getButtonColor(buttonSymbol),
+                    fontSize = fontSize
+                )
+            }
+            Spacer(modifier = Modifier.width(SpacerPadding))
+        }
+    }
+    Spacer(modifier = Modifier.height(SpacerPadding))
 }
