@@ -1,50 +1,52 @@
 package com.example.secondtask_composecalculator.data
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import com.example.secondtask_composecalculator.ui.theme.ActionButtonColor
 import com.example.secondtask_composecalculator.ui.theme.NumberButtonColor
 
 
-var numberIsClicked = false
-var actionIsClicked = false
-var errorInString = false
-var doubleInExpression = false
-val operationsArray = listOf('-', '+', '*', '/')
+var numberIsClicked: Boolean = false
+var actionIsClicked: Boolean  = false
+var errorInString: Boolean  = false
+var doubleInExpression: Boolean  = false
+val operationsArray: List<Char> = listOf('-', '+', '*', '/')
+val expression: MutableState<String> = mutableStateOf("")
 
 class CalculatorAction {
 
-    fun handleButtonClick(buttonSymbol: ActionEnum, expression: MutableState<String>) {
+    fun handleButtonClick(buttonSymbol: ActionEnum) {
         when (buttonSymbol) {
             ActionEnum.PLUS -> {
-                addPlusOnExpression(expression = expression)
+                addPlusOnExpression()
             }
             ActionEnum.DIVIDE -> {
-                addDivideOnExpression(expression = expression)
+                addDivideOnExpression()
             }
             ActionEnum.MULTIPLY -> {
-                addMultiplyOnExpression(expression = expression)
+                addMultiplyOnExpression()
             }
             ActionEnum.MINUS -> {
-                addMinusOnExpression(expression = expression)
+                addMinusOnExpression()
             }
             ActionEnum.SIGN -> {
-                signChange(expression)
+                signChange()
             }
             ActionEnum.CALCULATE -> {
-                calculate(expression)
+                calculate()
             }
             ActionEnum.PERCENT -> {
-                toPercent(expression)
+                toPercent()
             }
             ActionEnum.CLEAR -> {
-                clearExpression(expression)
+                clearExpression()
             }
             ActionEnum.DOUBLE -> {
-                toDouble(expression)
+                toDouble()
             }
             else -> {
-                addNumberOnExpression(buttonSymbol, expression)
+                addNumberOnExpression(buttonSymbol)
             }
         }
     }
@@ -60,7 +62,7 @@ class CalculatorAction {
         }
     }
 
-    fun changeDelColor(expression: MutableState<String>): Color {
+    fun changeDelColor(): Color {
         val color: Color
         if (expression.value == "") {
             color = Color.DarkGray
@@ -70,19 +72,22 @@ class CalculatorAction {
         return color
     }
 
-    fun oneCharDelete(expression: MutableState<String>) {
+    fun oneCharDelete() {
         if (expression.value.isNotEmpty()) {
             expression.value = expression.value.substring(0, expression.value.length - 1)
+            actionIsClicked = false
+            errorInString = false
+            doubleInExpression = false
         }
     }
 
 
-    private fun addNumberOnExpression(buttonSymbol: ActionEnum, expression: MutableState<String>) {
+    private fun addNumberOnExpression(buttonSymbol: ActionEnum) {
         expression.value += buttonSymbol.symbol
         numberIsClicked = true
     }
 
-    private fun addMinusOnExpression(expression: MutableState<String>) {
+    private fun addMinusOnExpression() {
         if (!actionIsClicked and !errorInString) {
             expression.value += ActionEnum.MINUS.symbol
             actionIsClicked = true
@@ -90,7 +95,7 @@ class CalculatorAction {
         }
     }
 
-    private fun addPlusOnExpression(expression: MutableState<String>) {
+    private fun addPlusOnExpression() {
         if (!actionIsClicked and !errorInString) {
             expression.value += ActionEnum.PLUS.symbol
             actionIsClicked = true
@@ -98,7 +103,7 @@ class CalculatorAction {
         }
     }
 
-    private fun addDivideOnExpression(expression: MutableState<String>) {
+    private fun addDivideOnExpression() {
         if (!actionIsClicked and !errorInString) {
             expression.value += "/"
             actionIsClicked = true
@@ -107,7 +112,7 @@ class CalculatorAction {
     }
 
 
-    private fun addMultiplyOnExpression(expression: MutableState<String>) {
+    private fun addMultiplyOnExpression() {
         if (!actionIsClicked and !errorInString) {
             expression.value += "*"
             actionIsClicked = true
@@ -116,7 +121,7 @@ class CalculatorAction {
     }
 
 
-    private fun isOperatorInExpression(expression: MutableState<String>): Boolean {
+    private fun isOperatorInExpression(): Boolean {
         var flag = true
         for (i in 0 until expression.value.length) {
             if (operationsArray.contains(expression.value[i])) {
@@ -127,93 +132,95 @@ class CalculatorAction {
         return flag
     }
 
-    private fun clearExpression(expression: MutableState<String>) {
+    private fun clearExpression() {
         actionIsClicked = false
         numberIsClicked = false
-        errorInString = false
+        doubleInExpression = false
         expression.value = ""
     }
 
 
-    private fun toDouble(expression: MutableState<String>) {
-        if (numberIsClicked and !doubleInExpression) {
+    private fun toDouble() {
+        if (!doubleInExpression) {
             expression.value += "."
             doubleInExpression = true
         }
     }
 
-    fun calculate(expression: MutableState<String>){
+
+     private fun calculate() {
         actionIsClicked = false
         numberIsClicked = false
         doubleInExpression = false
         var result = ""
-        if (!isOperatorInExpression(expression)){
-            val exp  = expression.value
+        if (!isOperatorInExpression()) {
+            val exp = expression.value
             var i = 1
             var firstNumber = ""
             firstNumber += exp[0]
-            while (!operationsArray.contains(exp[i])){
+            while (!operationsArray.contains(exp[i])) {
                 firstNumber += exp[i]
                 i += 1
-                if (i > exp.length - 1){
+                if (i > exp.length - 1) {
                     expression.value = firstNumber
                 }
             }
             var secondNumber = ""
             var j = i + 1
-            while(j <= exp.length - 1){
+            while (j <= exp.length - 1) {
                 secondNumber += exp[j]
                 j += 1
             }
-            if (exp[i] == '+'){
+            if (exp[i] == '+') {
                 result = (firstNumber.toDouble() + secondNumber.toDouble()).toString()
-            }
-            else if (exp[i] == '-'){
+            } else if (exp[i] == '-') {
                 result = (firstNumber.toDouble() - secondNumber.toDouble()).toString()
-            }
-            else if (exp[i] == '*'){
+            } else if (exp[i] == '*') {
                 result = (firstNumber.toDouble() * secondNumber.toDouble()).toString()
-            }
-            else if (exp[i] == '/'){
-                if (secondNumber.toInt() == 0){
+            } else if (exp[i] == '/') {
+                if (secondNumber.toInt() == 0) {
                     result = "Error"
                     errorInString = true
-                }
-                else{
+                } else {
                     result = (firstNumber.toDouble() / secondNumber.toDouble()).toString()
                 }
             }
             expression.value = if (result.endsWith(".0")) {
                 result.substring(0, result.length - 2)
-            }
-            else{
+            } else {
                 result
             }
         }
     }
 
-
-    private fun toPercent(expression: MutableState<String>) {
-        var result: String = expression.value
-        result = (result.toDouble() * 0.01).toString()
-        expression.value = result
+    private fun toPercent() {
+        if (!errorInString){
+            calculate()
+            var result: String = expression.value
+            result = (result.toDouble() * 0.01).toString()
+            expression.value = result
+        }
     }
 
-    private fun toPositive(expression: MutableState<String>) {
-        expression.value.drop(1)
+    private fun toPositive() {
+        var newExpression = ""
+        for (i in 1 until expression.value.length){
+            newExpression += expression.value[i]
+        }
+        expression.value = newExpression
     }
 
-    private fun toNegative(expression: MutableState<String>) {
+    private fun toNegative() {
         var newExpression = "-"
         expression.value.forEach { newExpression += it }
         expression.value = newExpression
     }
 
-    private fun signChange(expression: MutableState<String>) {
+    private fun signChange() {
         if (expression.value[0] == '-') {
-            toPositive(expression)
+            toPositive()
         } else {
-            toNegative(expression)
+            toNegative()
         }
     }
 }
