@@ -4,10 +4,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 
-var LabelSize = 24.sp
-var MainExpressionSize = 50.sp
-var ClearButtonSize = 24.sp
-var DefaultButtonSize = 32.sp
-var DeleteEndPadding = 16.dp
-var DeleteTopPadding = 16.dp
-var DeleteBottomPadding = 32.dp
+val LabelSize = 24.sp
+val MainExpressionSize = 50.sp
+val ClearButtonSize = 24.sp
+val DefaultButtonSize = 32.sp
+val DeleteEndPadding = 16.dp
+val DeleteTopPadding = 16.dp
+val DeleteBottomPadding = 32.dp

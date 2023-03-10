@@ -10,8 +10,6 @@ import androidx.compose.ui.unit.sp
 import com.example.secondtask_composecalculator.R
 
 
-
-
 val GoogleSansMedium = FontFamily(
     Font(R.font.googlesans_medium)
 )

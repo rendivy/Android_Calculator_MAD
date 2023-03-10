@@ -1,4 +1,5 @@
 package com.example.secondtask_composecalculator
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
@@ -12,13 +13,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import com.example.secondtask_composecalculator.data.ActionEnum
+import com.example.secondtask_composecalculator.data.CalculatorAction
 import com.example.secondtask_composecalculator.ui.theme.*
 
 
-
+@Preview(showBackground = true)
 @Composable
 fun CalculatorView() {
-    var expression = remember { mutableStateOf("") }
+    val expression = remember { mutableStateOf("") }
 
     val buttonMatrix: List<List<ActionEnum>> = listOf(
         listOf(ActionEnum.CLEAR, ActionEnum.SIGN, ActionEnum.PERCENT, ActionEnum.DIVIDE),
@@ -27,6 +29,7 @@ fun CalculatorView() {
         listOf(ActionEnum.ONE, ActionEnum.TWO, ActionEnum.THREE, ActionEnum.PLUS),
         listOf(ActionEnum.ZERO, ActionEnum.DOUBLE, ActionEnum.CALCULATE)
     )
+    val action = CalculatorAction()
 
     Column(modifier = Modifier.background(DisplayColor))
     {
@@ -37,7 +40,8 @@ fun CalculatorView() {
             fontFamily = GoogleSansMedium,
             modifier = Modifier.padding(
                 start = MainExpressionPadding,
-                top = MainExpressionPadding)
+                top = MainExpressionPadding
+            )
         )
         Text(
             text = expression.value,
@@ -46,7 +50,8 @@ fun CalculatorView() {
             textAlign = TextAlign.Start,
             modifier = Modifier.padding(
                 start = MainExpressionPadding,
-                top = MainExpressionPadding),
+                top = MainExpressionPadding
+            ),
             fontFamily = GoogleSansMedium,
             maxLines = 2,
         )
@@ -69,18 +74,22 @@ fun CalculatorView() {
                     .padding(
                         end = DeleteEndPadding,
                         bottom = DeleteBottomPadding,
-                        top = DeleteTopPadding),
+                        top = DeleteTopPadding
+                    ),
                 horizontalArrangement = Arrangement.End
             )
             {
-                DeleteButton(expression = expression)
+                DeleteButton(
+                    { action.oneCharDelete(expression) },
+                    action.changeDelColor(expression)
+                )
             }
             Divider(
                 modifier = Modifier.padding(bottom = DividerPadding, end = DividerPadding),
                 thickness = DividerThickness,
                 color = Color.DarkGray
             )
-            var modifier:Modifier
+            var modifier: Modifier
             var fontSize: TextUnit
             buttonMatrix.forEach { buttons ->
                 Row(
@@ -90,20 +99,18 @@ fun CalculatorView() {
                 )
                 {
                     buttons.forEach { buttonSymbol ->
-                        modifier = if (buttonSymbol.symbol == ActionEnum.ZERO.symbol){
+                        modifier = if (buttonSymbol.symbol == ActionEnum.ZERO.symbol) {
                             Modifier
                                 .weight(2.2f)
                                 .aspectRatio(2.2f)
-                        }
-                        else{
+                        } else {
                             Modifier
                                 .weight(1f)
                                 .aspectRatio(1f)
                         }
-                        fontSize = if (buttonSymbol.symbol == ActionEnum.CLEAR.symbol){
+                        fontSize = if (buttonSymbol.symbol == ActionEnum.CLEAR.symbol) {
                             ClearButtonSize
-                        }
-                        else{
+                        } else {
                             DefaultButtonSize
                         }
                         Box(
@@ -111,9 +118,9 @@ fun CalculatorView() {
                         )
                         {
                             ButtonModel(
-                                symbol = buttonSymbol.symbol,
-                                onClick = { handleButtonClick(buttonSymbol, expression) },
-                                color = getButtonColor(buttonSymbol),
+                                buttonSymbol = buttonSymbol,
+                                onClick = { action.handleButtonClick(buttonSymbol, expression) },
+                                color = action.getButtonColor(buttonSymbol),
                                 fontSize = fontSize
                             )
                         }
@@ -125,9 +132,3 @@ fun CalculatorView() {
         }
     }
 }
-
-
-
-
-
-

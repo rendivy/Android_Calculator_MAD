@@ -11,6 +11,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.SemanticsActions.OnClick
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.example.secondtask_composecalculator.data.ActionEnum
@@ -18,58 +19,36 @@ import com.example.secondtask_composecalculator.ui.theme.*
 
 
 @Composable
-fun getButtonColor(buttonSymbol: ActionEnum): Color{
-    when(buttonSymbol){
-        ActionEnum.PLUS, ActionEnum.DIVIDE, ActionEnum.MINUS,
-        ActionEnum.CALCULATE, ActionEnum.MULTIPLY-> {
-            return ActionButtonColor
-        }
-        else -> {
-            return NumberButtonColor
-        }
-    }
-}
-
-@Composable
-fun changeDelColor(expression: MutableState<String>): Color{
-    val color: Color
-    if (expression.value == "") {
-        color = Color.DarkGray
-    }
-    else{
-        color = Color.White
-    }
-    return color
-}
-
-@Composable
-fun DeleteButton(expression: MutableState<String>){
-    IconButton(
-        modifier = Modifier.width(24.dp).height(18.dp),
-        onClick = { oneCharDelete(expression) })
-    { Icon(
+fun DeleteButton(charDelete: () -> Unit, buttonColor: Color) {
+    IconButton(modifier = Modifier
+        .width(24.dp)
+        .height(18.dp), onClick = { charDelete() }) {
+        Icon(
             painter = painterResource(id = R.drawable.delete_button_background),
             contentDescription = "Delete button",
-            tint = changeDelColor(expression = expression))
+            tint = buttonColor
+        )
     }
 }
 
 @Composable
-fun ButtonModel(symbol: String, onClick: (String) -> Unit, color: Color, fontSize: TextUnit){
+fun ButtonModel(
+    buttonSymbol: ActionEnum, onClick: (String) -> Unit, color: Color, fontSize: TextUnit
+) {
     Button(
         modifier = Modifier
             .background(DisplayColor)
             .fillMaxSize(),
         colors = ButtonDefaults.buttonColors(backgroundColor = color),
         shape = RoundedCornerShape(28.dp),
-        onClick = { onClick.invoke(symbol) },
-    )
-    {
+        onClick = { onClick.invoke(buttonSymbol.symbol) },
+    ) {
         Text(
-            text = symbol,
+            text = buttonSymbol.symbol,
             fontFamily = GoogleSansMedium,
             fontSize = fontSize,
-            color = FontColor)
+            color = FontColor
+        )
     }
 }
 
