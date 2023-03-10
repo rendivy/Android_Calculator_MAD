@@ -6,16 +6,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.SemanticsActions.OnClick
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.example.secondtask_composecalculator.data.ActionEnum
-import com.example.secondtask_composecalculator.ui.theme.*
+import com.example.secondtask_composecalculator.ui.theme.GoogleSansMedium
 
 
 @Composable
@@ -37,7 +36,7 @@ fun ButtonModel(
 ) {
     Button(
         modifier = Modifier
-            .background(DisplayColor)
+            .background(MaterialTheme.colorScheme.background)
             .fillMaxSize(),
         colors = ButtonDefaults.buttonColors(backgroundColor = color),
         shape = RoundedCornerShape(28.dp),
@@ -47,7 +46,7 @@ fun ButtonModel(
             text = buttonSymbol.symbol,
             fontFamily = GoogleSansMedium,
             fontSize = fontSize,
-            color = FontColor
+            color = MaterialTheme.colorScheme.onPrimary
         )
     }
 }

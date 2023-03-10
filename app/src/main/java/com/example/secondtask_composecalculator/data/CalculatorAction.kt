@@ -1,11 +1,10 @@
 package com.example.secondtask_composecalculator.data
 
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
-import com.example.secondtask_composecalculator.ui.theme.ActionButtonColor
-import com.example.secondtask_composecalculator.ui.theme.NumberButtonColor
-
 
 var numberIsClicked: Boolean = false
 var actionIsClicked: Boolean = false
@@ -51,13 +50,14 @@ class CalculatorAction {
         }
     }
 
+    @Composable
     fun getButtonColor(buttonSymbol: ActionEnum): Color {
         when (buttonSymbol) {
             ActionEnum.PLUS, ActionEnum.DIVIDE, ActionEnum.MINUS, ActionEnum.CALCULATE, ActionEnum.MULTIPLY -> {
-                return ActionButtonColor
+                return MaterialTheme.colorScheme.primary
             }
             else -> {
-                return NumberButtonColor
+                return MaterialTheme.colorScheme.primaryContainer
             }
         }
     }

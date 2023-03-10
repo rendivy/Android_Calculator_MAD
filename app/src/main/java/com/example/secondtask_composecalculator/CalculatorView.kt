@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,7 +29,7 @@ val action = CalculatorAction()
 @Preview(showBackground = true)
 @Composable
 fun CalculatorView() {
-    Column(modifier = Modifier.background(DisplayColor)) {
+    Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
         TextView()
         KeyboardView()
     }
@@ -38,113 +39,123 @@ fun CalculatorView() {
 
 @Composable
 fun TextView() {
-    Column(modifier = Modifier.background(DisplayColor))
-    {
-        Text(
-            text = MainLabel,
-            fontSize = LabelSize,
-            color = LabelColor,
-            fontFamily = GoogleSansMedium,
-            modifier = Modifier.padding(
-                start = MainExpressionPadding,
-                top = MainExpressionPadding
+    DynamicTheme(darkTheme = true) {
+        Column(modifier = Modifier.background(MaterialTheme.colorScheme.background).fillMaxWidth())
+        {
+            Text(
+                text = MainLabel,
+                fontSize = LabelSize,
+                color = MaterialTheme.colorScheme.onBackground,
+                fontFamily = GoogleSansMedium,
+                modifier = Modifier.padding(
+                    start = MainExpressionPadding,
+                    top = MainExpressionPadding
+                ).fillMaxWidth()
             )
-        )
-        Text(
-            text = expression.value,
-            fontSize = MainExpressionSize,
-            color = FontColor,
-            textAlign = TextAlign.Start,
-            modifier = Modifier.padding(
-                start = MainExpressionPadding,
-                top = MainExpressionPadding
-            ),
-            fontFamily = GoogleSansMedium,
-            maxLines = 2,
-        )
+            Text(
+                text = expression.value,
+                fontSize = MainExpressionSize,
+                color = MaterialTheme.colorScheme.onBackground,
+                textAlign = TextAlign.Start,
+                modifier = Modifier.padding(
+                    start = MainExpressionPadding,
+                    top = MainExpressionPadding
+                ).fillMaxWidth(),
+                fontFamily = GoogleSansMedium,
+                maxLines = 2,
+            )
+        }
     }
 }
+
 
 @Composable
 fun KeyboardView() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .background(DisplayColor)
-            .padding(
-                start = ColumnPadding,
-                top = ColumnPadding,
-            ),
-        verticalArrangement = Arrangement.Bottom
-    )
-    {
-        Row(
+    DynamicTheme(darkTheme = true) {
+        Column(
             modifier = Modifier
-                .background(DisplayColor)
                 .fillMaxWidth()
+                .fillMaxHeight()
+                .background(MaterialTheme.colorScheme.background)
                 .padding(
-                    end = DeleteEndPadding,
-                    bottom = DeleteBottomPadding,
-                    top = DeleteTopPadding
+                    start = ColumnPadding,
+                    top = ColumnPadding,
                 ),
-            horizontalArrangement = Arrangement.End
+            verticalArrangement = Arrangement.Bottom
         )
         {
-            DeleteButton(
-                { action.oneCharDelete() },
-                action.changeDelColor()
+            Row(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.background)
+                    .fillMaxWidth()
+                    .padding(
+                        end = DeleteEndPadding,
+                        bottom = DeleteBottomPadding,
+                        top = DeleteTopPadding
+                    ),
+                horizontalArrangement = Arrangement.End
             )
-        }
-        Divider(
-            modifier = Modifier.padding(bottom = DividerPadding, end = DividerPadding),
-            thickness = DividerThickness,
-            color = Color.DarkGray
-        )
-        buttonMatrix.forEach {
-                buttons -> KeyboardRow(buttons = buttons)
+            {
+                DeleteButton(
+                    { action.oneCharDelete() },
+                    action.changeDelColor()
+                )
+            }
+            Divider(
+                modifier = Modifier.padding(bottom = DividerPadding, end = DividerPadding),
+                thickness = DividerThickness,
+                color = Color.DarkGray
+            )
+            buttonMatrix.forEach { buttons ->
+                KeyboardRow(buttons = buttons)
+            }
         }
     }
 }
 
 @Composable
-fun KeyboardRow(buttons: List<ActionEnum>){
+fun KeyboardRow(buttons: List<ActionEnum>) {
     var modifier: Modifier
     var fontSize: TextUnit
-    Row(
-        modifier = Modifier
-            .background(DisplayColor),
-        horizontalArrangement = Arrangement.SpaceAround
-    )
-    {
-        buttons.forEach { buttonSymbol ->
-            modifier = if (buttonSymbol == ActionEnum.ZERO) {
-                Modifier
-                    .weight(2.2f)
-                    .aspectRatio(2.2f)
-            } else {
-                Modifier
-                    .weight(1f)
-                    .aspectRatio(1f)
-            }
-            fontSize = if (buttonSymbol.symbol == ActionEnum.CLEAR.symbol) {
-                ClearButtonSize
-            } else {
-                DefaultButtonSize
-            }
-            Box(
-                modifier = modifier
-            )
-            {
-                ButtonModel(
-                    buttonSymbol = buttonSymbol,
-                    onClick = { action.handleButtonClick(buttonSymbol) },
-                    color = action.getButtonColor(buttonSymbol),
-                    fontSize = fontSize
+    DynamicTheme(darkTheme = true) {
+        Row(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background),
+            horizontalArrangement = Arrangement.SpaceAround
+        )
+        {
+            buttons.forEach { buttonSymbol ->
+                modifier = if (buttonSymbol == ActionEnum.ZERO) {
+                    Modifier
+                        .weight(2.2f)
+                        .aspectRatio(2.2f)
+                } else {
+                    Modifier
+                        .weight(1f)
+                        .aspectRatio(1f)
+                }
+                fontSize = if (buttonSymbol.symbol == ActionEnum.CLEAR.symbol) {
+                    ClearButtonSize
+                } else {
+                    DefaultButtonSize
+                }
+                Box(
+                    modifier = modifier.background(MaterialTheme.colorScheme.primaryContainer)
                 )
+                {
+                    ButtonModel(
+                        buttonSymbol = buttonSymbol,
+                        onClick = { action.handleButtonClick(buttonSymbol) },
+                        color = action.getButtonColor(buttonSymbol),
+                        fontSize = fontSize
+                    )
+                }
+                Spacer(modifier = Modifier.width(SpacerPadding).background(MaterialTheme.colorScheme.background))
             }
-            Spacer(modifier = Modifier.width(SpacerPadding))
         }
+        Spacer(modifier = Modifier.height(SpacerPadding).background(MaterialTheme.colorScheme.background))
     }
-    Spacer(modifier = Modifier.height(SpacerPadding))
 }
+
+
+
