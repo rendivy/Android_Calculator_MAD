@@ -8,9 +8,9 @@ import com.example.secondtask_composecalculator.ui.theme.NumberButtonColor
 
 
 var numberIsClicked: Boolean = false
-var actionIsClicked: Boolean  = false
-var errorInString: Boolean  = false
-var doubleInExpression: Boolean  = false
+var actionIsClicked: Boolean = false
+var errorInString: Boolean = false
+var doubleInExpression: Boolean = false
 val operationsArray: List<Char> = listOf('-', '+', '*', '/')
 val expression: MutableState<String> = mutableStateOf("")
 
@@ -148,7 +148,7 @@ class CalculatorAction {
     }
 
 
-     private fun calculate() {
+    private fun calculate() {
         actionIsClicked = false
         numberIsClicked = false
         doubleInExpression = false
@@ -194,7 +194,7 @@ class CalculatorAction {
     }
 
     private fun toPercent() {
-        if (!errorInString){
+        if (!errorInString) {
             calculate()
             var result: String = expression.value
             result = (result.toDouble() * 0.01).toString()
@@ -204,7 +204,7 @@ class CalculatorAction {
 
     private fun toPositive() {
         var newExpression = ""
-        for (i in 1 until expression.value.length){
+        for (i in 1 until expression.value.length) {
             newExpression += expression.value[i]
         }
         expression.value = newExpression
