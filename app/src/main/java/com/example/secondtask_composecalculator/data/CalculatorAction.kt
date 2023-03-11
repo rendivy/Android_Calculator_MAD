@@ -63,7 +63,7 @@ class CalculatorAction {
     }
 
     // сделал эти методы Composable, потому что копилятор не даёт возвращать цвета из Material3, если функция не Composable
-   @Composable
+    @Composable
     fun getFontColor(buttonSymbol: ActionEnum): Color {
         when (buttonSymbol) {
             ActionEnum.PLUS, ActionEnum.DIVIDE, ActionEnum.MINUS, ActionEnum.CALCULATE, ActionEnum.MULTIPLY -> {
@@ -75,7 +75,7 @@ class CalculatorAction {
         }
     }
 
-   fun changeDelColor(): Color {
+    fun changeDelColor(): Color {
         val color: Color
         if (expression.value == "") {
             color = Color.DarkGray
