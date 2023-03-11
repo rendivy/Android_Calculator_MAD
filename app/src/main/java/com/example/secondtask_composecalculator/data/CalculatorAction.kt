@@ -75,7 +75,7 @@ class CalculatorAction {
         }
     }
 
-    fun changeDelColor(): Color {
+   fun changeDelColor(): Color {
         val color: Color
         if (expression.value == "") {
             color = Color.DarkGray

@@ -61,7 +61,7 @@ fun TextView() {
             Text(
                 text = expression.value,
                 fontSize = MainExpressionSize,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Start,
                 modifier = Modifier
                     .padding(
