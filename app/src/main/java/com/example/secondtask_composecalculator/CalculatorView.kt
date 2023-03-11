@@ -40,27 +40,35 @@ fun CalculatorView() {
 @Composable
 fun TextView() {
     DynamicTheme(darkTheme = true) {
-        Column(modifier = Modifier.background(MaterialTheme.colorScheme.background).fillMaxWidth())
+        Column(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .fillMaxWidth()
+        )
         {
             Text(
                 text = MainLabel,
                 fontSize = LabelSize,
                 color = MaterialTheme.colorScheme.onBackground,
                 fontFamily = GoogleSansMedium,
-                modifier = Modifier.padding(
-                    start = MainExpressionPadding,
-                    top = MainExpressionPadding
-                ).fillMaxWidth()
+                modifier = Modifier
+                    .padding(
+                        start = MainExpressionPadding,
+                        top = MainExpressionPadding
+                    )
+                    .fillMaxWidth()
             )
             Text(
                 text = expression.value,
                 fontSize = MainExpressionSize,
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Start,
-                modifier = Modifier.padding(
-                    start = MainExpressionPadding,
-                    top = MainExpressionPadding
-                ).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(
+                        start = MainExpressionPadding,
+                        top = MainExpressionPadding
+                    )
+                    .fillMaxWidth(),
                 fontFamily = GoogleSansMedium,
                 maxLines = 2,
             )
@@ -147,13 +155,22 @@ fun KeyboardRow(buttons: List<ActionEnum>) {
                         buttonSymbol = buttonSymbol,
                         onClick = { action.handleButtonClick(buttonSymbol) },
                         color = action.getButtonColor(buttonSymbol),
-                        fontSize = fontSize
+                        fontSize = fontSize,
+                        fontColor = action.getFontColor(buttonSymbol = buttonSymbol)
                     )
                 }
-                Spacer(modifier = Modifier.width(SpacerPadding).background(MaterialTheme.colorScheme.background))
+                Spacer(
+                    modifier = Modifier
+                        .width(SpacerPadding)
+                        .background(MaterialTheme.colorScheme.background)
+                )
             }
         }
-        Spacer(modifier = Modifier.height(SpacerPadding).background(MaterialTheme.colorScheme.background))
+        Spacer(
+            modifier = Modifier
+                .height(SpacerPadding)
+                .background(MaterialTheme.colorScheme.background)
+        )
     }
 }
 

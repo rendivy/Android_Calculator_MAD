@@ -32,7 +32,8 @@ fun DeleteButton(charDelete: () -> Unit, buttonColor: Color) {
 
 @Composable
 fun ButtonModel(
-    buttonSymbol: ActionEnum, onClick: (String) -> Unit, color: Color, fontSize: TextUnit
+    buttonSymbol: ActionEnum, onClick: (String) -> Unit, color: Color, fontSize: TextUnit,
+    fontColor: Color
 ) {
     Button(
         modifier = Modifier
@@ -46,7 +47,7 @@ fun ButtonModel(
             text = buttonSymbol.symbol,
             fontFamily = GoogleSansMedium,
             fontSize = fontSize,
-            color = MaterialTheme.colorScheme.onPrimary
+            color = fontColor
         )
     }
 }
