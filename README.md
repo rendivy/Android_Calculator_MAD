@@ -6,7 +6,7 @@
 
 
 
-## Скриншоты
+# Скриншоты
 <p>
     <img src="image/firstScreen.png" width="250" height="540">
     <img src="image/secondScreen.png" width="250" height="540">
